@@ -2,13 +2,14 @@
 
 ## Requirements
 
-1. Create a folder named `minecraft_serwer_63` on a Linux host.
-2. Install Minecraft Bedrock Edition server on the Linux host.
-3. Run the server using the following command:
+1. Install Minecraft Bedrock Edition server on the Linux host.
+2. Run the server using the following command:
     ```
     screen -S minecraft
     screen -r minecraft
-    cd minecraft_serwer_63
+    ```
+3. Go to your minecraft server folder and run:
+    ```
     ./bedrock_server > output.txt 2>&1
     Ctrl+a+d (to log out from screen)
     ```
@@ -19,12 +20,13 @@
 
 Add the following variables to your local environment:
 
-|    Variable   | Description                             |
-| ------------- |-----------------------------------------|
-| FAST_HOSTNAME | Host name of SSH server                 |
-| FAST_USERNAME | Username to authorize on SSH server      |
-| FAST_PASSWORD | User password to authorize on SSH server |
-| FAST_PLAYERS  | List of players on Minecraft             |
+|    Variable   | Description                                   |
+| ------------- |-----------------------------------------------|
+| FAST_HOSTNAME | Host name of SSH server                       |
+| FAST_USERNAME | Username to authorize on SSH server            |
+| FAST_PASSWORD | User password to authorize on SSH server       |
+| FAST_PLAYERS  | List of players on Minecraft                   |
+| FAST_PATH     | Path output.txt in zabbix server folder        |
 
 After setting the variables, install the required packages using the following command:
 ```

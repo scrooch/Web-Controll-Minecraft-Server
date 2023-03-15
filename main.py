@@ -29,7 +29,7 @@ def get_minecraft_data():
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(hostname=VAR_HOSTNAME, username=VAR_USERNAME, password=VAR_PASSWORD)
-    stdin, stdout, stderr = ssh.exec_command('cat minecraft_serwer_63/output.txt')
+    stdin, stdout, stderr = ssh.exec_command(f"cat {os.getenv('FAST_PATH')}")
     output = stdout.read().decode('utf-8')
     ssh.close()
     return output
