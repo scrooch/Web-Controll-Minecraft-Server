@@ -6,7 +6,6 @@ import re
 from datetime import datetime
 import os
 
-
 app = FastAPI()
 
 VAR_HOSTNAME = os.getenv('FAST_HOSTNAME')
@@ -15,7 +14,6 @@ VAR_PASSWORD = os.getenv('FAST_PASSWORD')
 VAR_PLAYERS = os.getenv('FAST_PLAYERS').split(", ")
 JSON_INPUT = {"Users": {}, "Server": "", "ServerDate": "", "ServerVersion": ""}
 JSON_OUTPUT = json.loads(json.dumps(JSON_INPUT))
-
 
 app.add_middleware(
     CORSMiddleware,
@@ -51,7 +49,8 @@ def get_state(minecraft_user, output):
         state = "Offline"
     return state
 
-def get_disconn_date(minecraft_user,output):
+
+def get_disconn_date(minecraft_user, output):
     results_conn = []
     results_disconn = []
     last_in = ''
@@ -77,6 +76,18 @@ def get_disconn_date(minecraft_user,output):
                 break
     return last_in
 
+
+def connect_and_run(command):
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect(hostname=VAR_HOSTNAME, username=VAR_USERNAME, password=VAR_PASSWORD)
+    stdin, stdout, stderr = ssh.exec_command('screen -r minecraft', get_pty=True)
+    stdin.write(f'{command}\n')
+    stdin.write('\x01')  # Ctrl+A
+    stdin.write('d')  # d
+    output = stdout.read().decode()
+    ssh.close()
+    return {"message": output}
 
 
 @app.get("/avaible")
@@ -112,28 +123,12 @@ async def get_availability():
                     break
     return JSON_OUTPUT
 
+
 @app.post("/day")
 async def post_minecraft_day():
-    ssh = paramiko.SSHClient()
-    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect(hostname=VAR_HOSTNAME, username=VAR_USERNAME, password=VAR_PASSWORD)
-    stdin, stdout, stderr = ssh.exec_command('screen -r minecraft', get_pty=True)
-    stdin.write('time set day\n')
-    stdin.write('\x01')  # Ctrl+A
-    stdin.write('d')     # d
-    output = stdout.read().decode()
-    ssh.close()
-    return {"message": output}
+    return connect_and_run('time set day')
+
 
 @app.post("/clear")
 async def post_minecraft_day():
-    ssh = paramiko.SSHClient()
-    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect(hostname=VAR_HOSTNAME, username=VAR_USERNAME, password=VAR_PASSWORD)
-    stdin, stdout, stderr = ssh.exec_command('screen -r minecraft', get_pty=True)
-    stdin.write('weather clear\n')
-    stdin.write('\x01')  # Ctrl+A
-    stdin.write('d')     # d
-    output = stdout.read().decode()
-    ssh.close()
-    return {"message": output}
+    return connect_and_run('weather clear')
