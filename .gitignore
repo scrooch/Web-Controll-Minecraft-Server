@@ -102,14 +102,9 @@ dist
 
 # TernJS port file
 .tern-port
-/.idea/WebControllMinecraftServer.iml
-/.idea/vcs.xml
+.idea/
 /frontend/src/assets/scrooch.jpg
-/.idea/inspectionProfiles/profiles_settings.xml
 /frontend/src/assets/pikson.jpg
-/.idea/modules.xml
-/.idea/misc.xml
 /frontend/src/assets/kazik.jpg
 /frontend/src/assets/dziemin.jpg
 /frontend/src/assets/adas.jpg
-/.idea/.gitignore
