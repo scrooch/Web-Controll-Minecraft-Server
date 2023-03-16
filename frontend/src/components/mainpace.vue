@@ -6,12 +6,20 @@
       </v-card>
       <v-row :align="align" no-gutters style="min-height: 150px;">
         <v-col v-for="(status, user) in apidata.Users" :key="user" :class="{'mb-3': $vuetify.breakpoint.width < 600}">
-          <v-card v-if="isMobile" class="pa-1" elevation="2">
+          <v-card v-if="isMobile" class="pa-1" elevation="2"  @click="snack_online(status.last_in)">
             <v-avatar size="45px">
               <img :src="image[user]" alt="users[user].name">
             </v-avatar>
             <v-item><span :class="{'text-green': status.state === 'Online', 'text-red': status.state === 'Offline'}">{{ status.state }}</span></v-item>
+
         </v-card>
+        <v-snackbar
+            style="text-align: center"
+            v-model="snackbar"
+            :timeout="timeout"
+        >
+            Ostatni raz: {{ snack_text ? snack_text : 'Brak danych' }}
+        </v-snackbar>
           <v-card
             v-if="!isMobile"
             class="mx-auto"
@@ -60,7 +68,10 @@ export default {
         Kaziula2496: KaziulaImage,
         MrKopciak: AdasImage,
         PiksoKN: PiksonImage
-      }
+      },
+      snackbar: false,
+      timeout: 2000,
+      snack_text: '',
     }
   },
   mounted() {
@@ -71,6 +82,12 @@ export default {
       .catch(error => {
         console.log(error);
       });
+  },
+  methods: {
+    snack_online(text_value){
+        this.snack_text=text_value
+        this.snackbar=true
+    }
   },
 
   computed: {

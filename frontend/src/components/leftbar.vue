@@ -26,6 +26,7 @@
       {{ snackbartext }}
     </v-snackbar>
     <v-btn
+        v-if="!isMobile"
         dark
         class="ma-2"
         width="190px"
@@ -74,7 +75,13 @@ export default {
         console.error(error);
       }
     }
-  }
+  },
+  computed: {
+      // determine if screen width is less than 600px (typical mobile device width)
+      isMobile() {
+        return this.$vuetify.breakpoint.smAndDown
+      }
+    }
 }
 </script>
 
