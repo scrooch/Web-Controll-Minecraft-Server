@@ -110,3 +110,4 @@ dist
 /frontend/src/assets/adas.jpg
 /frontend/package-lock.json
 /frontend/yarn.lock
+__pycache__/

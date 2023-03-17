@@ -69,7 +69,27 @@ To run the Vue frontend, you need to:
 
     Replace the value of `VUE_APP_API_URL` with your API URL and port, and replace the value of `VUE_APP_MINECRAFT_IP` with your Minecraft server IP and port.
 
-3. Open the terminal in the `/frontend` directory and run the following commands:
+3. Put players photos in to /src/assets and then import them in to mainpace.
+   For example if you have players: ScroochPL, dziemin4812, Kaziula2496, MrKopciak and PiksoKN you should first import photos:
+   ```
+    import KaziulaImage from '@/assets/kazik.jpg';
+    import ScroochImage from '@/assets/scrooch.jpg';
+    import DzieminImage from '@/assets/dziemin.jpg';
+    import AdasImage from '@/assets/adas.jpg';
+    import PiksonImage from '@/assets/pikson.jpg';
+   ```
+   And then assign to var image i data() ( image:{ REAL_USERNAME: var_from_improt } ):
+   ```
+   image:{
+        ScroochPL: ScroochImage,
+        dziemin4812: DzieminImage,
+        Kaziula2496: KaziulaImage,
+        MrKopciak: AdasImage,
+        PiksoKN: PiksonImage
+      },
+   ```
+
+4. Open the terminal in the `/frontend` directory and run the following commands:
     ```
     yarn global add @vue/cli
     yarn install
