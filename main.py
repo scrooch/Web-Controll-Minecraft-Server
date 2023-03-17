@@ -5,6 +5,7 @@ import paramiko
 import re
 from datetime import datetime
 import os
+import time
 
 app = FastAPI()
 
@@ -77,6 +78,37 @@ def get_disconn_date(minecraft_user, output):
     return last_in
 
 
+def get_time(minecraft_user, output):
+    results_conn = []
+    results_disconn = []
+    result = 0
+    for line in output.split('\n'):
+        match = re.search(f"Player connected: {minecraft_user}", line)
+        match2 = re.search(f"Player disconnected: {minecraft_user}", line)
+        if match:
+            results_conn.append(line.strip())
+        elif match2:
+            results_disconn.append(line.strip())
+    for i in range(len(results_conn)):
+        timestamp_start = re.search(r"^\[(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})", results_conn[i])
+        if i < len(results_disconn):
+            timestamp_stop = re.search(r"^\[(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})", results_disconn[i])
+        else:
+            timestamp_stop = None
+        if timestamp_start:
+            year, month, day, hour, minute, second = map(int, timestamp_start.groups())
+            timestamp_start = datetime(year, month, day, hour, minute, second)
+            timestamp_start = timestamp_start.timestamp()
+        if timestamp_stop:
+            year, month, day, hour, minute, second = map(int, timestamp_stop.groups())
+            timestamp_stop = datetime(year, month, day, hour, minute, second)
+            timestamp_stop = timestamp_stop.timestamp()
+        else:
+            timestamp_stop = time.time()
+        difer = timestamp_stop - timestamp_start
+        result = result + difer 
+    return round(float(result/3600),1)
+
 def connect_and_run(command):
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -96,9 +128,11 @@ async def get_availability():
     for minecraft_user in VAR_PLAYERS:
         state = get_state(minecraft_user, output)
         last_in = get_disconn_date(minecraft_user, output)
+        mytime = get_time(minecraft_user, output)
         JSON_OUTPUT["Users"].setdefault(minecraft_user, {})
         JSON_OUTPUT["Users"][minecraft_user]["state"] = state
         JSON_OUTPUT["Users"][minecraft_user]["last_in"] = last_in
+        JSON_OUTPUT["Users"][minecraft_user]["time"] = mytime
     for line in output.split('\n'):
         match = re.search("Crash", line)
         if match:
