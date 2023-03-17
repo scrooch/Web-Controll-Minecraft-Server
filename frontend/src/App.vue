@@ -14,13 +14,22 @@
             <v-sheet
               rounded="lg"
               class="mt-2"
-              min-height="200"
+              min-height="500"
               min-width="190"
             >
               <leftbar></leftbar>
             </v-sheet>
           </v-col>
-          <v-col>
+          <v-col v-if="!isMobile">
+            <v-sheet
+              rounded="lg"
+              class="mt-2"
+              min-height="500"
+            >
+                <mainpace></mainpace>
+            </v-sheet>
+          </v-col>
+          <v-col v-if="isMobile">
             <v-sheet
               rounded="lg"
               class="mt-2"
@@ -36,7 +45,7 @@
           >
             <v-sheet
               rounded="lg"
-              min-height="200"
+              min-height="500"
               class="mt-2"
             >
               <rightbar></rightbar>
@@ -49,10 +58,23 @@
             <v-sheet
               rounded="lg"
               class="mt-2 pt-2"
-              min-height="200"
+              min-height="150"
               min-width="190"
             >
               <leftbar></leftbar>
+            </v-sheet>
+          </v-col>
+          <v-col
+            cols="12"
+            sm="2"
+            v-if="isMobile">
+            <v-sheet
+              rounded="lg"
+              class="mt-2 pt-2"
+              min-height="150"
+              min-width="190"
+            >
+              <rightbar></rightbar>
             </v-sheet>
           </v-col>
         </v-row>
