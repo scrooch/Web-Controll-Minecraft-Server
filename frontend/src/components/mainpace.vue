@@ -50,11 +50,6 @@
 
 <script>
 import axios from "axios";
-import KaziulaImage from '@/assets/kazik.jpg';
-import ScroochImage from '@/assets/scrooch.jpg';
-import DzieminImage from '@/assets/dziemin.jpg';
-import AdasImage from '@/assets/adas.jpg';
-import PiksonImage from '@/assets/pikson.jpg';
 
 export default {
   name: 'MyComponent',
@@ -62,17 +57,13 @@ export default {
     return {
       align: 'center',
       apidata: '',
-      image:{
-        ScroochPL: ScroochImage,
-        dziemin4812: DzieminImage,
-        Kaziula2496: KaziulaImage,
-        MrKopciak: AdasImage,
-        PiksoKN: PiksonImage
-      },
       snackbar: false,
       timeout: 2000,
       snack_text: '',
     }
+  },
+  created(){
+    this.image = JSON.parse(process.env.VUE_APP_IMAGES);
   },
   mounted() {
     axios.get(`${process.env.VUE_APP_API_URL}/avaible`, {headers: {'Access-Control-Allow-Origin': '*'}})

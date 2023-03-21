@@ -39,13 +39,13 @@
 
 Add the following variables to your local environment:
 
-|    Variable   | Description                                   |
-| ------------- |-----------------------------------------------|
-| FAST_HOSTNAME | Host name of SSH server                       |
-| FAST_USERNAME | Username to authorize on SSH server            |
-| FAST_PASSWORD | User password to authorize on SSH server       |
-| FAST_PLAYERS  | List of players on Minecraft                   |
-| FAST_PATH     | Path output.txt in zabbix server folder        |
+|    Variable   | Description                                    | Example varaible         |
+| ------------- |------------------------------------------------|--------------------------|
+| FAST_HOSTNAME | Host name of SSH server                        |127.0.0.1                 |
+| FAST_USERNAME | Username to authorize on SSH server            |admin                     |
+| FAST_PASSWORD | User password to authorize on SSH server       |admin_pass                |
+| FAST_PLAYERS  | List of players on Minecraft                   |player1, player2, player3 |
+| FAST_PATH     | Path output.txt in zabbix server folder        |/etc/minecraft/output.txt |
 
 After setting the variables, install the required packages using the following command:
 ```
@@ -62,34 +62,14 @@ To run the Vue frontend, you need to:
 
 1. Install Node.js
 2. Create a file named `.env` in the `/frontend` directory and add the following environment variables:
-    ```
-    VUE_APP_API_URL=http://127.0.0.1:3000
-    VUE_APP_MINECRAFT_IP=127.0.0.1:19132
-    ```
 
-    Replace the value of `VUE_APP_API_URL` with your API URL and port, and replace the value of `VUE_APP_MINECRAFT_IP` with your Minecraft server IP and port.
+|    Variable          | Description                                    | Example varaible                                                  |
+| -------------------- |------------------------------------------------|-------------------------------------------------------------------|
+| VUE_APP_API_URL      | API URL with port                              |http://127.0.0.1:3000                                              |
+| VUE_APP_MINECRAFT_IP | Minecraft server IP and port                   |127.0.0.1:19132                                                    |
+| VUE_APP_IMAGES       | Players nick and photo url                     |{"player1": "url_photo_player1","player2": "url_photo_player2",...}|
 
-3. Put players photos in to /src/assets and then import them in to mainpace.
-   For example if you have players: ScroochPL, dziemin4812, Kaziula2496, MrKopciak and PiksoKN you should first import photos:
-   ```
-    import KaziulaImage from '@/assets/kazik.jpg';
-    import ScroochImage from '@/assets/scrooch.jpg';
-    import DzieminImage from '@/assets/dziemin.jpg';
-    import AdasImage from '@/assets/adas.jpg';
-    import PiksonImage from '@/assets/pikson.jpg';
-   ```
-   And then assign to var image i data() ( image:{ REAL_USERNAME: var_from_improt } ):
-   ```
-   image:{
-        ScroochPL: ScroochImage,
-        dziemin4812: DzieminImage,
-        Kaziula2496: KaziulaImage,
-        MrKopciak: AdasImage,
-        PiksoKN: PiksonImage
-      },
-   ```
-
-4. Open the terminal in the `/frontend` directory and run the following commands:
+3. Open the terminal in the `/frontend` directory and run the following commands:
     ```
     yarn global add @vue/cli
     yarn install

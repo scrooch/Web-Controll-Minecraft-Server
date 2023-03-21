@@ -13,10 +13,7 @@
     <v-card class="ma-1">
     <v-list dense>
       <v-subheader>Tabela zwycięzców</v-subheader>
-      <v-list-item-group
-        v-model="selectedItem"
-        color="primary"
-      >
+      <v-list-item-group>
         <v-list-item
           v-for="(status, user) in sortedUsers"
           :key="user"
