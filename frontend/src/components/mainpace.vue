@@ -3,6 +3,53 @@
     <v-container>
       <v-card class="pa-2 text-center text-h4">
           Status serwera minecraft: <span :class="{'text-green': apidata.Server === 'Online', 'text-red': apidata.Server === 'Offline'}">{{ apidata.Server }}</span>
+        <v-dialog
+        v-if="!isRunning && showButton"
+          v-model="dialog"
+          persistent
+          max-width="800"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="red"
+              style="margin-bottom: 5px; margin-left: 10px;"
+              v-bind="attrs"
+              v-on="on"
+            >
+                Zrestartuj serwer
+            </v-btn>
+          </template>
+          <v-card>
+            <v-card-title class="text-h5">
+              Czy jesteś pewien, że chcesz zrestartować minecraft serwer?
+            </v-card-title>
+            <v-card-text>
+                          Po zestartowaniu:<br/>
+                          - Zrestaruje się tabela zwyciężców<br/>
+                          - Czas ostatniego logowania użytkowników się zrestartuje<br/>
+                          <br/>
+
+                          PS. Nie jesteś inkognito
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="green darken-1"
+                text
+                @click="dialog = false"
+              >
+                Nie
+              </v-btn>
+              <v-btn
+                color="green darken-1"
+                text
+                @click="restartServer()"
+              >
+                Tak
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-card>
       <v-row :align="align" no-gutters style="min-height: 150px;">
         <v-col v-for="(status, user) in apidata.Users" :key="user" :class="{'mb-3': $vuetify.breakpoint.width < 600}">
@@ -60,6 +107,8 @@ export default {
       snackbar: false,
       timeout: 2000,
       snack_text: '',
+      dialog: false,
+      showButton: false,
     }
   },
   created(){
@@ -69,6 +118,9 @@ export default {
     axios.get(`${process.env.VUE_APP_API_URL}/avaible`, {headers: {'Access-Control-Allow-Origin': '*'}})
       .then(response => {
         this.apidata = response.data;
+        setTimeout(() => {
+        this.showButton = true;
+      }, 1000);
       })
       .catch(error => {
         console.log(error);
@@ -78,6 +130,15 @@ export default {
     snack_online(text_value){
         this.snack_text=text_value
         this.snackbar=true
+    },
+    async restartServer() {
+      try {
+        await axios.post(`${process.env.VUE_APP_API_URL}/reload`, {});
+      } catch (error) {
+        console.error(error);
+      }
+      this.dialog = false
+      window.location.reload();
     }
   },
 
@@ -85,6 +146,9 @@ export default {
       // determine if screen width is less than 600px (typical mobile device width)
       isMobile() {
         return this.$vuetify.breakpoint.smAndDown
+      },
+      isRunning(){
+        return this.apidata.Server==='Online'
       }
     }
 }

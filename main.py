@@ -166,3 +166,7 @@ async def post_minecraft_day():
 @app.post("/clear")
 async def post_minecraft_day():
     return connect_and_run('weather clear')
+
+@app.post("/reload")
+async def post_minecraft_day():
+    return connect_and_run('./bedrock_server > output.txt 2>&1')
